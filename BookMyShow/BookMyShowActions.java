@@ -12,10 +12,12 @@ public class BookMyShowActions {
                     Admin checkAdmin = AdminAction.adminLog(scanner);
                     if (checkAdmin!=null){
                         System.out.println("Login Successful..." + checkAdmin.getAdminName()+"\n A warm welcome from Book My Show");
+                        AdminAction.actions(scanner);
                     }
                     else {
                         System.out.println("Invalid details . Please Try Again...");
                     }
+                    break;
                 case 2:
                     System.out.println("User Login Page");
                     User checkUser = UserAction.userLog(scanner);
@@ -25,9 +27,11 @@ public class BookMyShowActions {
                     else {
                         System.out.println("Invalid details . Please Try Again...");
                     }
+                    break;
                 case 3:
                     System.out.println("Sign Up / Register");
                     register();
+                    break;
                 case 4:
                     System.out.println("Exit");
                     return ;
