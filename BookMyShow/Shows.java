@@ -6,15 +6,18 @@ public class Shows {
     private LocalDate showDateForMovie;
     private ScreenMap screen;
     private int movieTicket;
+    private String movieName;
     private  HashMap<Character,ArrayList<String>> seatRequire;
-    public Shows(LocalTime movieStartTime,LocalTime movieEndTime,LocalDate showDateForMovie,ScreenMap screen,int movieTicket,HashMap<Character,ArrayList<String>> seatRequire){
-        this.seatRequire=seatRequire;
-        this.movieEndTime=movieEndTime;
-        this.movieStartTime=movieStartTime;
-        this.movieTicket=movieTicket;
-        this.showDateForMovie=showDateForMovie;
-        this.screen=screen;
-    }
+
+public Shows(LocalTime movieStartTime, LocalTime movieEndTime, LocalDate showDateForMovie, ScreenMap screen, int movieTicket, HashMap<Character, ArrayList<String>> seatRequire, String movieName) {
+    this.movieName = movieName;
+    this.seatRequire = seatRequire;
+    this.movieEndTime = movieEndTime;
+    this.movieStartTime = movieStartTime;
+    this.movieTicket = movieTicket;
+    this.showDateForMovie = showDateForMovie;
+    this.screen = screen;
+}
 
     public LocalTime getMovieStartTime() {
         return movieStartTime;
@@ -42,5 +45,13 @@ public class Shows {
 
     public void setSeatRequire(HashMap<Character, ArrayList<String>> seatRequire) {
         this.seatRequire = seatRequire;
+    }
+
+    public String getMovieName() {
+        return movieName;
+    }
+
+    public void setMovieName(String movieName) {
+        this.movieName = movieName;
     }
 }

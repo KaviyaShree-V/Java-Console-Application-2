@@ -1,5 +1,5 @@
 import java.time.LocalDate;
-
+import java.util.*;
 public class Movies {
     private String movieName;
     private String location;
@@ -9,6 +9,7 @@ public class Movies {
     private LocalDate localDate;
     private double duration;
 
+    public static ArrayList<Movies> allMovies = new ArrayList<>();
 
     public Movies(String movieName,String location,Theatre theatre,ScreenMap screen,Shows show,LocalDate localDate,double duration){
         this.movieName=movieName;
@@ -20,6 +21,9 @@ public class Movies {
         this.duration=duration;
     }
 
+    public static ArrayList<Movies> getAllMovies() {
+        return allMovies;
+    }
     public String getMovieName() {
         return movieName;
     }

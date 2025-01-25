@@ -7,7 +7,7 @@ public class User {
     private String tLocation;
     private ArrayList<Tickets> tickets =new ArrayList<>();
 
-    public User(String userName, String userPassword, String thName,String tLocation) {
+    public User(String userName, String thName, String userPassword, String tLocation) {
         this.userName=userName;
         this.userPassword=userPassword;
         this.surName =thName;
@@ -32,5 +32,9 @@ public class User {
 
     public String gettLocation() {
         return tLocation;
+    }
+
+    public void settLocation(String tLocation) {
+        this.tLocation = tLocation;
     }
 }

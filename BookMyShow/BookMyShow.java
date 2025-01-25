@@ -14,10 +14,12 @@ public class BookMyShow {
 
     static {
         admin.add(new Admin("BMS", "bms565"));
+        user.add(new User("kaviya","kaaviyaa","kaviya565","pollachi"));
     }
 
     public static ArrayList<Admin> getAdmin() {
         return admin;
+
     }
 
     public static ArrayList<User> getUser() {

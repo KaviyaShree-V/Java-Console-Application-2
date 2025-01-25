@@ -3,34 +3,38 @@ import java.util.ArrayList;
 
 public class Utilities {
 
-    static HashMap<Character, ArrayList<String>> generateSeatingPatterns(int totalSeats, String pattern) {
-        String[] theatreSeatCounts = pattern.split("\\*");
-        int sumOfRows = 0;
-        for (String seatsCount : theatreSeatCounts) {
-            sumOfRows += Integer.parseInt(seatsCount);
-        }
-        if (totalSeats % sumOfRows != 0) {
+    public static HashMap<Character, ArrayList<String>> generateSeatingPatterns(int totalSeats, String pattern) {
+        String[] seatPatternParts = pattern.split("\\*");
+        int rows = Integer.parseInt(seatPatternParts[0]);
+        int seatsPerRow = Integer.parseInt(seatPatternParts[1]);
+        int sections = Integer.parseInt(seatPatternParts[2]);
+
+        int calculatedTotalSeats = rows * seatsPerRow * sections;
+
+        if (calculatedTotalSeats != totalSeats) {
             System.out.println("The entered seat split value is invalid.");
             return null;
         }
-        int totalRows = totalSeats / sumOfRows;
-        HashMap<Character, ArrayList<String>> seatingArrangement = new HashMap<>();
 
-        char rows = 'z';
-        for (int row = 0; row < totalRows; row++) {
-            ArrayList<String> rowSeat = new ArrayList<>();
-            for (int i = 0; i < theatreSeatCounts.length; i++) {
-                int seatsInColumn = Integer.parseInt(theatreSeatCounts[i]);
-                for (int j = 0; j < seatsInColumn; j++) {
-                    rowSeat.add("[ ]");
+        HashMap<Character, ArrayList<String>> seatingArrangement = new HashMap<>();
+        char currentRow = 'A';
+
+        for (int r = 0; r < rows; r++) {
+            ArrayList<String> rowSeats = new ArrayList<>();
+
+            for (int sec = 0; sec < sections; sec++) {
+                for (int seat = 0; seat < seatsPerRow; seat++) {
+                    rowSeats.add(currentRow + String.valueOf(seat + 1));
                 }
-                if (i < theatreSeatCounts.length - 1) {
-                    rowSeat.add("\t\t\t\t");
+                if (sec < sections - 1) {
+                    rowSeats.add("\t\t");
                 }
             }
-            seatingArrangement.put(rows, rowSeat);
-            rows++;
+
+            seatingArrangement.put(currentRow, rowSeats);
+            currentRow++;
         }
+
         return seatingArrangement;
     }
 }
