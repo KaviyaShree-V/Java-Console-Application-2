@@ -1,57 +1,69 @@
-import java.time.*;
-import java.util.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
+
 public class Shows {
-    private LocalTime movieStartTime;
-    private LocalTime movieEndTime;
-    private LocalDate showDateForMovie;
-    private ScreenMap screen;
-    private int movieTicket;
-    private String movieName;
-    private  HashMap<Character,ArrayList<String>> seatRequire;
 
-public Shows(LocalTime movieStartTime, LocalTime movieEndTime, LocalDate showDateForMovie, ScreenMap screen, int movieTicket, HashMap<Character, ArrayList<String>> seatRequire, String movieName) {
-    this.movieName = movieName;
-    this.seatRequire = seatRequire;
-    this.movieEndTime = movieEndTime;
-    this.movieStartTime = movieStartTime;
-    this.movieTicket = movieTicket;
-    this.showDateForMovie = showDateForMovie;
-    this.screen = screen;
-}
+    private LocalTime showStartTime;
+    private LocalTime showEndTime;
+    private LocalDate dateOfShow;
+    private Screen screen;
+    private HashMap<Character, ArrayList<String>> seatsAndGrid = new HashMap<>();
+    private int ticketPrice;
 
-    public LocalTime getMovieStartTime() {
-        return movieStartTime;
+    public Shows(LocalDate dateOfShow, LocalTime startTime, LocalTime endTime, Screen screen, HashMap<Character, ArrayList<String>> seatsAndGrid, int price) {
+        this.dateOfShow = dateOfShow;
+        this.showStartTime = startTime;
+        this.showEndTime = endTime;
+        this.screen = screen;
+        this.seatsAndGrid = seatsAndGrid;
+        this.ticketPrice = price;
     }
 
-    public LocalTime getMovieEndTime() {
-        return movieEndTime;
+    public LocalDate getDateOfShow() {
+        return dateOfShow;
     }
 
-    public LocalDate getShowDateForMovie() {
-        return showDateForMovie;
+    public LocalTime getShowStartTime() {
+        return showStartTime;
     }
 
-    public ScreenMap getScreen() {
+    public void setSeatsAndGrid(HashMap<Character, ArrayList<String>> seatsAndGrid) {
+        this.seatsAndGrid = seatsAndGrid;
+    }
+
+    public LocalTime getShowEndTime() {
+        return showEndTime;
+    }
+
+    public HashMap<Character, ArrayList<String>> getSeatsAndGrid() {
+        return seatsAndGrid;
+    }
+
+    public Screen getScreens() {
         return screen;
     }
 
-    public int getMovieTicket() {
-        return movieTicket;
+    public int getTicketPrice() {
+        return ticketPrice;
     }
 
-    public HashMap<Character, ArrayList<String>> getSeatRequire() {
-        return seatRequire;
+    @Override
+    public String toString() {
+        return " * " + showStartTime.toString();
     }
 
-    public void setSeatRequire(HashMap<Character, ArrayList<String>> seatRequire) {
-        this.seatRequire = seatRequire;
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Shows shows = (Shows) o;
+        return Objects.equals(this.showStartTime, shows.showStartTime) && Objects.equals(this.showEndTime, shows.showEndTime) && Objects.equals(dateOfShow, shows.getDateOfShow());
     }
 
-    public String getMovieName() {
-        return movieName;
-    }
-
-    public void setMovieName(String movieName) {
-        this.movieName = movieName;
+    @Override
+    public int hashCode() {
+        return Objects.hash(showStartTime, showEndTime, dateOfShow);
     }
 }
