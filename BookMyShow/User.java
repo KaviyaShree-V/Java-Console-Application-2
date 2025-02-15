@@ -2,39 +2,39 @@ import java.util.ArrayList;
 
 public class User {
     private String userName;
-    private String userPassword;
-    private String surName;
-    private String tLocation;
-    private ArrayList<Tickets> tickets =new ArrayList<>();
+    private String userPassWord;
+    private String viewName;
+    private String userLocation;
+    private static ArrayList<Tickets> tickets = new ArrayList<>();
 
-    public User(String userName, String thName, String userPassword, String tLocation) {
+    public User(String userName,String userPassWord,String viewName,String userLocation){
         this.userName=userName;
-        this.userPassword=userPassword;
-        this.surName =thName;
-        this.tLocation=tLocation;
-    }
-
-    public String getUserPassword() {
-        return userPassword;
+        this.userPassWord=userPassWord;
+        this.viewName=viewName;
+        this.userLocation=userLocation;
     }
 
     public String getUserName() {
         return userName;
     }
 
+    public String getUserPassWord() {
+        return userPassWord;
+    }
+
+    public String getViewName() {
+        return viewName;
+    }
+
+    public String getUserLocation() {
+        return userLocation;
+    }
+
+    public void setUserLocation(String userLocation) {
+        this.userLocation = userLocation;
+    }
+
     public ArrayList<Tickets> getTickets() {
         return tickets;
-    }
-
-    public String getSurName() {
-        return surName;
-    }
-
-    public String gettLocation() {
-        return tLocation;
-    }
-
-    public void settLocation(String tLocation) {
-        this.tLocation = tLocation;
     }
 }
