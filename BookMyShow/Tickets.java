@@ -1,7 +1,8 @@
-import java.time.*;
-import java.util.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.HashSet;
 
-public class Tickets{
+public class Tickets {
     private String theatreName;
     private String movieName;
     private String screenName;
@@ -9,46 +10,54 @@ public class Tickets{
     private LocalTime showTime;
     private int noOfTickets;
     private HashSet<String> seatNumbers;
-    private int ticketAmount;
+    private int price;
+    private String location;
 
-    public Tickets(String theatreName,String movieName,String screenName,LocalTime showTime,int noOfTickets,LocalDate showDate,HashSet<String> seatNumbers,int ticketAmount ){
-        this.theatreName=theatreName;
-        this.movieName=movieName;
-        this.screenName=screenName;
-        this.showTime=showTime;
-        this.showDate=showDate;
-        this.noOfTickets=noOfTickets;
-        this.ticketAmount=ticketAmount;
-    }
-    public String getTheatreName() {
-        return theatreName;
-    }
-
-    public String getMovieName() {
-        return movieName;
-    }
-
-    public String getScreenName() {
-        return screenName;
+    public Tickets(String theatreName,String movieName,String screenName,LocalDate dateOfShow,LocalTime timeOfShow, int noOfTickets, HashSet<String> seatNumbers,int price,String location)
+    {
+        this.theatreName = theatreName;
+        this.movieName = movieName;
+        this.screenName = screenName;
+        this.showDate = dateOfShow;
+        this.showTime = timeOfShow;
+        this.noOfTickets = noOfTickets;
+        this.seatNumbers = seatNumbers;
+        this.price = price;
+        this.location=location;
     }
 
     public LocalDate getShowDate() {
         return showDate;
     }
-
-    public LocalTime getShowTime() {
-        return showTime;
-    }
-
-    public int getNoOfTickets() {
-        return noOfTickets;
+    public String getLocation(){
+        return location;
     }
 
     public HashSet<String> getSeatNumbers() {
         return seatNumbers;
     }
 
-    public int getTicketAmount() {
-        return ticketAmount;
+    public String getTheatreName() {
+        return theatreName;
+    }
+
+    public String getScreenName() {
+        return screenName;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public LocalTime getShowTime() {
+        return showTime;
+    }
+
+    public String getMovieName() {
+        return movieName;
+    }
+
+    public int getNoOfTickets() {
+        return noOfTickets;
     }
 }

@@ -1,25 +1,29 @@
 import java.util.HashMap;
 
 public class Theatre {
-    private String theatreName;
-    private String theatreLocation;
-    private HashMap<String,ScreenMap> screenHashMap;
+    private String name;
+    private HashMap<String,Screen> screenName = new HashMap<>();
+    private String location;
 
-    public Theatre(String theatreName, HashMap<String,ScreenMap> screenHashMap, String theatreLocation){
-        this.theatreName = theatreName;
-        this.screenHashMap=screenHashMap;
-        this.theatreLocation=theatreLocation;
+    public Theatre(String name, HashMap<String,Screen> screenNameAndObject, String location)
+    {
+        this.name = name;
+        this.screenName = screenNameAndObject;
+        this.location = location;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getTheatreName() {
-        return theatreName;
+    public String getName() {
+        return name;
     }
 
-    public String getTheatreLocation() {
-        return theatreLocation;
+    public HashMap<String,Screen> getScreenName() {
+        return screenName;
     }
 
-    public HashMap<String,ScreenMap> getScreenHashMap() {
-        return screenHashMap;
+    public String getLocation() {
+        return location;
     }
 }
