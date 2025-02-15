@@ -1,21 +1,17 @@
 public class Admin {
     private String adminName;
-    private String adminPassword;
+    private String adminPassWord;
 
-    public Admin(String adminName, String adminPassword) {
-        this.adminName = adminName;
-        this.adminPassword = adminPassword;
-    }
-
-    public String getAdminPassword() {
-        return adminPassword;
+    public Admin(String adminName,String adminPassWord){
+        this.adminName=adminName;
+        this.adminPassWord=adminPassWord;
     }
 
     public String getAdminName() {
         return adminName;
     }
 
-    public void setAdminPassword(String adminPassword) {
-        this.adminPassword = adminPassword;
+    public String getAdminPassWord() {
+        return adminPassWord;
     }
 }
