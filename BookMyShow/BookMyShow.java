@@ -1,45 +1,45 @@
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BookMyShow {
-
-    public static ArrayList<Admin> admin= new ArrayList<>();
-    public static ArrayList<User> user=new ArrayList<>();
-
-    public static ArrayList<Theatre> theatres = new ArrayList<>();
-    private static HashMap<String , Theatre> theatreNameMap = new HashMap<>();
-
+    private static ArrayList<Admin> admins = new ArrayList<>();
+    private static ArrayList<User> users = new ArrayList<>();
+    private static ArrayList<String> locations = new ArrayList<>();
+    private static HashMap<String,ArrayList<Movies>> movieAndMovieName = new HashMap<>();
+    private static HashMap<String,Theatre> theatreAndTheatreNAme = new HashMap<>();
     private static DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
     private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
     static {
-        admin.add(new Admin("BMS", "bms565"));
-        user.add(new User("kaviya","kaaviyaa","kaviya565","pollachi"));
+        admins.add(new Admin("a","1"));
+        users.add(new User("kaviya","kaviya565","KAVIYA","Pollachi"));
     }
 
-    public static ArrayList<Admin> getAdmin() {
-        return admin;
-
+    public static ArrayList<Admin> getAdmins() {
+        return admins;
     }
 
-    public static ArrayList<User> getUser() {
-        return user;
+    public static ArrayList<User> getUsers() {
+        return users;
     }
 
-    public static ArrayList<Theatre> getTheatres() {
-        return theatres;
+    public static ArrayList<String> getLocations() {
+        return locations;
     }
 
-    public static HashMap<String,Theatre> getTheatreName() {
-        return theatreNameMap;
+    public static HashMap<String, ArrayList<Movies>> getMovieAndMovieName() {
+        return movieAndMovieName;
     }
 
-    public static DateTimeFormatter getTimeFormatter() {
-        return timeFormatter;
+    public static HashMap<String,Theatre> getTheatreAndTheatreNAme() {
+        return theatreAndTheatreNAme;
     }
 
     public static DateTimeFormatter getDateFormatter() {
         return dateFormatter;
     }
-}
 
+    public static DateTimeFormatter getTimeFormatter() {
+        return timeFormatter;
+    }
+}
