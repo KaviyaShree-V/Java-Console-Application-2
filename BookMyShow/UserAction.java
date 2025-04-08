@@ -1,9 +1,6 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 
 public class UserAction {
     public static User userLogin() {
@@ -171,203 +168,220 @@ public class UserAction {
         return bookedMovies;
     }
 
-    public static ArrayList<Movies> getMoviesForLocationAndDate(String location, LocalDate date) {
-        ArrayList<Movies> result = new ArrayList<>();
-        for (var entry : BookMyShow.getMovieAndMovieName().entrySet()) {
-            for (Movies movie : entry.getValue()) {
-                if (movie.getLocation().equalsIgnoreCase(location) && movie.getDate().equals(date)) {
-                    result.add(movie);
-                }
-            }
-        }
-        return result;
-    }
-
     public static void seatBooking(User currentUser, ArrayList<Movies> movies) {
         Scanner scanner = new Scanner(System.in);
+        System.out.println(":::::::::::::::::::   BOOKING SEATS :::::::::::::::::::");
+
         LocalDate selectedDate = LocalDate.now();
         String userLocation = currentUser.getUserLocation();
 
         while (true) {
             HashSet<String> availableTheatres = new HashSet<>();
+
             for (Movies movie : movies) {
                 if (movie.getLocation().equalsIgnoreCase(userLocation) &&
-                        movie.getDate().equals(selectedDate)) {
+                        movie.getShow().getDateOfShow().equals(selectedDate)) {
                     availableTheatres.add(movie.getTheatre().getName());
                 }
             }
 
             if (availableTheatres.isEmpty()) {
-                System.out.println("No movies found. Do you want to change:");
-                System.out.println("1. Date");
-                System.out.println("2. Location");
-                System.out.println("3. Exit");
-                System.out.print("Enter choice: ");
-                String choiceInput = scanner.nextLine().trim();
+                System.out.println("\nNo theatres found for today.");
+                System.out.println("1. Change Date\n2. Change Location\n3. Exit");
+                System.out.print("Enter your choice: ");
+                String input = scanner.nextLine();
 
-                switch (choiceInput) {
-                    case "1":
-                        selectedDate = changeDate(scanner);
-                        break;
-                    case "2":
-                        changeLocation(currentUser, scanner);
-                        userLocation = currentUser.getUserLocation();
-                        break;
-                    case "3":
-                        return;
-                    default:
-                        System.out.println("Invalid choice.");
+                if (input.equals("1")) {
+                    LocalDate newDate = changeLocDate(currentUser);
+                    if (newDate != null) selectedDate = newDate;
+                } else if (input.equals("2")) {
+                    changeLocation(currentUser);
+                    userLocation = currentUser.getUserLocation();
+                } else {
+                    return;
                 }
                 continue;
             }
 
-            System.out.println("Available Theatres in " + userLocation + ": " + availableTheatres);
-            System.out.print("Enter Theatre name: ");
-            String selectedTheatre = scanner.nextLine().trim();
+            System.out.println("Available Theatres in " + userLocation + " on " +
+                    selectedDate.format(BookMyShow.getDateFormatter()) + ":");
+            for (String theatre : availableTheatres) {
+                System.out.println("- " + theatre);
+            }
 
-            ArrayList<Movies> filteredMovies = new ArrayList<>();
+            String selectedTheatre = "";
+            while (!availableTheatres.contains(selectedTheatre)) {
+                System.out.print("Enter the theatre name to book a seat: ");
+                selectedTheatre = scanner.nextLine().trim();
+                if (!availableTheatres.contains(selectedTheatre)) {
+                    System.out.println("Invalid theatre. Try again.");
+                }
+            }
+
+            ArrayList<Movies> theatreMovies = new ArrayList<>();
             for (Movies movie : movies) {
                 if (movie.getTheatre().getName().equalsIgnoreCase(selectedTheatre) &&
-                        movie.getDate().equals(selectedDate)) {
-                    filteredMovies.add(movie);
+                        movie.getShow().getDateOfShow().equals(selectedDate)) {
+                    theatreMovies.add(movie);
                 }
             }
 
-            if (filteredMovies.isEmpty()) {
-                System.out.println("No shows in selected theatre. Try again.");
-                continue;
+            if (theatreMovies.isEmpty()) {
+                System.out.println("No movies available in this theatre on the selected date.");
+                return;
             }
 
-            for (int i = 0; i < filteredMovies.size(); i++) {
-                System.out.println((i + 1) + ". " + filteredMovies.get(i).getName());
+            for (int i = 0; i < theatreMovies.size(); i++) {
+                System.out.println((i + 1) + ". " + theatreMovies.get(i).getName());
             }
 
-            System.out.print("Select a movie (number): ");
-            int movieChoice = Integer.parseInt(scanner.nextLine()) - 1;
-            if (movieChoice < 0 || movieChoice >= filteredMovies.size()) {
-                System.out.println("Invalid movie selection.");
-                continue;
+            int movieChoice = -1;
+            while (movieChoice < 0 || movieChoice >= theatreMovies.size()) {
+                System.out.print("Select movie number: ");
+                String input = scanner.nextLine();
+                try {
+                    movieChoice = Integer.parseInt(input) - 1;
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Try again.");
+                }
             }
 
-            Movies selectedMovie = filteredMovies.get(movieChoice);
-            bookSeats(scanner, currentUser, selectedMovie);
+            Movies selectedMovie = theatreMovies.get(movieChoice);
+            Shows currentShow = selectedMovie.getShow();
+            HashMap<Character, ArrayList<String>> seatingGrid = currentShow.getSeatsAndGrid();
+
+            int availableSeats = 0;
+            for (Map.Entry<Character, ArrayList<String>> row : seatingGrid.entrySet()) {
+                for (String seat : row.getValue()) {
+                    if (!seat.equals("[X]")) {
+                        availableSeats++;
+                    }
+                }
+            }
+
+            int noOfSeats = 0;
+            while (noOfSeats <= 0 || noOfSeats > availableSeats) {
+                System.out.print("Enter number of seats to book (max " + availableSeats + "): ");
+                try {
+                    noOfSeats = Integer.parseInt(scanner.nextLine());
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Try again.");
+                }
+            }
+
+            displaySeating(seatingGrid);
+            HashSet<String> bookedSeats = new HashSet<>();
+
+            for (int i = 0; i < noOfSeats; i++) {
+                while (true) {
+                    System.out.print("Enter seat " + (i + 1) + ": ");
+                    String seat = scanner.nextLine().toUpperCase();
+                    if (seat.length() < 2) {
+                        System.out.println("Invalid seat format.");
+                        continue;
+                    }
+
+                    char row = seat.charAt(0);
+                    if (!seatingGrid.containsKey(row)) {
+                        System.out.println("Invalid row.");
+                        continue;
+                    }
+
+                    ArrayList<String> seats = seatingGrid.get(row);
+                    boolean found = false;
+                    for (int j = 0; j < seats.size(); j++) {
+                        if (seats.get(j).equals(seat)) {
+                            seats.set(j, "[X]");
+                            bookedSeats.add(seat);
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        System.out.println("Seat already booked or invalid.");
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            long totalAmount = selectedMovie.getTicket() * noOfSeats;
+            System.out.println("Total Amount: ₹" + totalAmount);
+            confirmBooking(currentShow, seatingGrid);
+
+            Tickets newTicket = new Tickets(
+                    selectedMovie.getTheatre().getName(),
+                    selectedMovie.getName(),
+                    selectedMovie.getScreen().getScreenName(),
+                    selectedMovie.getShow().getDateOfShow(),
+                    selectedMovie.getShow().getShowStartTime(),
+                    noOfSeats,
+                    bookedSeats,
+                    (int) totalAmount,
+                    selectedMovie.getLocation()
+            );
+            currentUser.getTickets().add(newTicket);
+            System.out.println("Tickets successfully booked!");
             return;
         }
     }
 
-    public static void bookSeats(Scanner scanner, User currentUser, Movies selectedMovie) {
-        Shows currentShow = selectedMovie.getShow();
-        HashMap<Character, ArrayList<String>> seatingGrid = currentShow.getSeatsAndGrid();
+    public static LocalDate changeLocDate(User currentUser) {
+        Scanner scanner = new Scanner(System.in);
+        DateTimeFormatter formatter = BookMyShow.getDateFormatter();
+        LocalDate currentDate = LocalDate.now();
 
-        displaySeating(seatingGrid);
-        int availableSeats = (int) seatingGrid.values().stream()
-                .flatMap(Collection::stream)
-                .filter(seat -> !seat.equals("[X]"))
-                .count();
-
-        int noOfSeats = 0;
         while (true) {
-            System.out.print("Enter number of seats to book (Available: " + availableSeats + "): ");
-            String input = scanner.nextLine();
-            if (input.matches("\\d+")) {
-                noOfSeats = Integer.parseInt(input);
-                if (noOfSeats <= availableSeats && noOfSeats > 0) break;
-            }
-            System.out.println("Invalid number. Try again.");
-        }
+            System.out.print("Enter the new date (dd/MM/yyyy): ");
+            String inputDate = scanner.nextLine().trim();
 
-        HashSet<String> bookedSeats = new HashSet<>();
-        for (int i = 0; i < noOfSeats; i++) {
-            while (true) {
-                System.out.print("Enter seat " + (i + 1) + ": ");
-                String seatInput = scanner.nextLine().toUpperCase();
-                if (seatInput.length() < 2) {
-                    System.out.println("Invalid format.");
+            try {
+                LocalDate newDate = LocalDate.parse(inputDate, formatter);
+                if (newDate.isBefore(currentDate)) {
+                    System.out.println("Date cannot be in the past.");
                     continue;
                 }
-                char row = seatInput.charAt(0);
-                if (!seatingGrid.containsKey(row)) {
-                    System.out.println("Invalid row.");
-                    continue;
-                }
-                ArrayList<String> seats = seatingGrid.get(row);
-                int index = seats.indexOf(seatInput);
-                if (index != -1 && !seatInput.equals("[X]")) {
-                    seats.set(index, "[X]");
-                    bookedSeats.add(seatInput);
-                    break;
-                } else {
-                    System.out.println("Seat unavailable. Try another.");
-                }
+                return newDate;
+            } catch (Exception e) {
+                System.out.println("Invalid date format.");
             }
         }
+    }
 
-        long totalAmount = noOfSeats * selectedMovie.getTicket();
-        System.out.println("Total Amount: ₹" + totalAmount);
-        confirmBooking(currentShow, seatingGrid);
-
-        Tickets ticket = new Tickets(
-                selectedMovie.getTheatre().getName(),
-                selectedMovie.getName(),
-                selectedMovie.getScreen().getScreenName(),
-                selectedMovie.getDate(),
-                currentShow.getShowStartTime(),
-                noOfSeats,
-                bookedSeats,
-                (int) totalAmount,
-                selectedMovie.getLocation()
-        );
-        currentUser.getTickets().add(ticket);
-        System.out.println("Tickets successfully booked!");
+    public static void changeLocation(User currentUser) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the new location: ");
+        String newLocation = scanner.nextLine().trim();
+        currentUser.setUserLocation(newLocation);
+        System.out.println("Location updated to: " + newLocation);
     }
 
     public static void displaySeating(HashMap<Character, ArrayList<String>> seatingGrid) {
-        for (var entry : seatingGrid.entrySet()) {
-            System.out.print(entry.getKey() + "  ");
+        for (Map.Entry<Character, ArrayList<String>> entry : seatingGrid.entrySet()) {
+            System.out.print(entry.getKey() + "    ");
             for (String seat : entry.getValue()) {
-                System.out.print(seat + " ");
+                System.out.print(seat + "   ");
             }
             System.out.println();
         }
     }
 
-    public static void confirmBooking(Shows show, HashMap<Character, ArrayList<String>> seatingGrid) {
-        System.out.println("Booking confirmed! Updated seating:");
+    public static void confirmBooking(Shows currentShow, HashMap<Character, ArrayList<String>> seatingGrid) {
+        System.out.println("Booking confirmed! Updated seating arrangement:");
         displaySeating(seatingGrid);
-    }
-
-    public static LocalDate changeDate(Scanner scanner) {
-        DateTimeFormatter formatter = BookMyShow.getDateFormatter();
-        LocalDate today = LocalDate.now();
-        while (true) {
-            System.out.print("Enter new date (dd/MM/yyyy): ");
-            String dateInput = scanner.nextLine().trim();
-            try {
-                LocalDate newDate = LocalDate.parse(dateInput, formatter);
-                if (!newDate.isBefore(today)) return newDate;
-                else System.out.println("Date cannot be in the past.");
-            } catch (Exception e) {
-                System.out.println("Invalid format. Try again.");
-            }
-        }
-    }
-
-    public static void changeLocation(User currentUser, Scanner scanner) {
-        System.out.print("Enter new location: ");
-        String location = scanner.nextLine().trim();
-        currentUser.setUserLocation(location);
-        System.out.println("Location updated to: " + location);
     }
 
     public static void viewTickets(User currentUser) {
         System.out.println(":::::::::::::::::   VIEW BOOKED TICKETS :::::::::::::::::::");
-        var tickets = currentUser.getTickets();
-        if (tickets.isEmpty()) {
+        var viewtickets = currentUser.getTickets();
+
+        if (viewtickets.isEmpty()) {
             System.out.println("No tickets booked yet.");
             return;
         }
 
-        for (Tickets ticket : tickets) {
+        for (Tickets ticket : viewtickets) {
             System.out.println("\n============================================");
             System.out.println("Theatre Name   : " + ticket.getTheatreName());
             System.out.println("Location       : " + ticket.getLocation());
