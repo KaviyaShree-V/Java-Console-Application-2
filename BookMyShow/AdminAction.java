@@ -129,96 +129,6 @@ public class AdminAction {
         }
     }
 
-
-//    public static void addMovies() {
-//        Scanner scanner=new Scanner(System.in);
-//        while (true) {
-//            System.out.println("Enter the Location to Add Movie:");
-//            String nlocation = scanner.nextLine();
-//            for (var loc : BookMyShow.getLocations()) {
-//                for (var theatre : BookMyShow.getTheatreAndTheatreNAme().keySet()) {
-//                    if (BookMyShow.getLocations().contains(nlocation)) {
-//                        if (BookMyShow.getTheatreAndTheatreNAme().get(theatre).getLocation().equals(nlocation)) {
-//                            System.out.println("Enter the movie name:");
-//                            String movie = scanner.nextLine();
-//                            System.out.print("Enter the Date of the movie (dd/mm/yyyy): ");
-//                            LocalDate dateOfMovie = LocalDate.parse(scanner.nextLine(), BookMyShow.getDateFormatter());
-//                            System.out.print("Enter the Duration of the movie: ");
-//                            long duration = Long.parseLong(scanner.nextLine());
-//                            System.out.print("Enter the price of the Movie: ");
-//                            int priceOfMovie = Integer.parseInt(scanner.nextLine());
-//
-//                            System.out.println("Available Theatre:");
-//                            //for (var theatre : BookMyShow.getTheatreAndTheatreNAme().keySet()) {
-//                            if (BookMyShow.getTheatreAndTheatreNAme().get(theatre).getLocation().equals(nlocation)) {
-//                                System.out.println("\t" + theatre);
-//                            }
-//                            //}
-//                            String movieTheatre;
-//                            String screenName;
-//                            while (true) {
-//                                System.out.println("Add Movie...");
-//                                System.out.println("Enter the theatre to add a movie:");
-//                                movieTheatre = scanner.nextLine();
-//                                //var theatre = BookMyShow.getTheatreAndTheatreNAme().keySet();
-//                                if (theatre.contains(movieTheatre)) {
-//                                    Theatre theatre1 = BookMyShow.getTheatreAndTheatreNAme().get(movieTheatre);
-//                                    System.out.println("Available screens..");
-//                                    for (var screen : theatre1.getScreenName().keySet()) {
-//                                        System.out.println("\t" + screen);
-//                                    }
-//                                    System.out.println("Enter the screen name to add movie:");
-//                                    screenName = scanner.nextLine();
-//                                    var screens = theatre1.getScreenName().keySet();
-//                                    if (screens.contains(screenName)) {
-//                                        Screen screen = theatre1.getScreenName().get(screenName);
-//                                    } else {
-//                                        System.out.println("No screen found");
-//                                    }
-//                                } else {
-//                                    System.out.println("No theatres found in this location..");
-//                                    continue;
-//                                }
-//                                break;
-//                            }
-//                            System.out.println("Enter the show time (HH:mm) :");
-//                            LocalTime mstart = LocalTime.parse(scanner.nextLine(), BookMyShow.getTimeFormatter());
-//                            LocalTime mend = mstart.plusMinutes(duration + 40);
-//                            //var theatre = BookMyShow.getTheatreAndTheatreNAme().keySet();
-//                            Theatre theatre1 = BookMyShow.getTheatreAndTheatreNAme().get(movieTheatre);
-//                            Screen screen = theatre1.getScreenName().get(screenName);
-//
-//                            for (var show : screen.getShowsInScreen()) {
-//                                if (dateOfMovie.isEqual(show.getDateOfShow())) {
-//                                    if (mstart.isBefore(show.getShowStartTime()) && mend.isBefore(show.getShowStartTime()) || mstart.isAfter(show.getShowEndTime()) && mend.isAfter(show.getShowStartTime())) {
-//                                        System.out.println("Show already exixts..");
-//                                    }
-//                                }
-//                            }
-//                            Shows currentShow = new Shows(dateOfMovie, mstart, mend, screen, screen.getSeatsGrid(), priceOfMovie);
-//                            screen.getShowsInScreen().add(currentShow);
-//                            Movies currentMovie = new Movies(movie, nlocation, dateOfMovie, duration, theatre1, screen, currentShow, priceOfMovie);
-//                            ArrayList<Movies> moviesArrayList = BookMyShow.getMovieAndMovieName().get(movie);
-//                            if (moviesArrayList == null) {
-//                                moviesArrayList = new ArrayList<>();
-//                                BookMyShow.getMovieAndMovieName().put(movie, moviesArrayList);
-//                            }
-//                            moviesArrayList.add(currentMovie);
-//                            System.out.println("Movie added successfully in " + currentMovie.getTheatre().getName() + " on " + dateOfMovie.format(BookMyShow.getDateFormatter()) + " at " + mstart.format(BookMyShow.getTimeFormatter()));
-//                            break;
-//                        }
-//                    } else {
-//                        System.out.println("Sorry ! No Locations found...");
-//                    }
-//                    break;
-//                }
-//                System.out.println("Sorry ! No Locations found...");
-//                break;
-//            }
-//            break;
-//        }
-//    }
-
     public static void addMovies() {
         Scanner scanner = new Scanner(System.in);
 
@@ -334,10 +244,6 @@ public class AdminAction {
                 System.out.println("Screen Name:" + screen);
                 System.out.println("Number of seats in Screen " + theatre.getScreenName().get(screen).getSeatNumber());
                 System.out.println("Seat arrangement : \n");
-//                for (var seats : theatre.getScreenName().get(screen).getSeatsGrid().keySet()) {
-//                    System.out.print(seats);
-//                    System.out.println(theatre.getScreenName().get(screen).getSeatsGrid().values());
-//                }
                 for (var row : theatre.getScreenName().get(screen).getSeatsGrid().keySet()) {
                     System.out.print(row + " ");
                     for (var seat : theatre.getScreenName().get(screen).getSeatsGrid().get(row)) {
