@@ -10,9 +10,10 @@ public class BookMyShow {
     private static HashMap<String,Theatre> theatreAndTheatreNAme = new HashMap<>();
     private static DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
     private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     static {
-        admins.add(new Admin("a","1"));
-        users.add(new User("kaviya","kaviya565","KAVIYA","Pollachi"));
+        admins.add(new Admin("admin","a123"));
+        users.add(new User("k","5","Pollachi"));
     }
 
     public static ArrayList<Admin> getAdmins() {
