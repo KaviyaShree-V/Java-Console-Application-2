@@ -477,93 +477,174 @@ public class UserAction {
 //        }
 //    }
 
+//    public static LocalDate changeLocDate(User currentUser) {
+//        LocalDate currentDate = LocalDate.now();
+//        Scanner scanner = new Scanner(System.in);
+//        DateTimeFormatter formatter = BookMyShow.getDateFormatter();
+//
+//        while (true) {
+//            System.out.println("\nDo you want to change the date or location?");
+//            System.out.println("1. Change Date");
+//            System.out.println("2. Change Location");
+//            System.out.println("3. Exit");
+//            System.out.print("Enter your choice: ");
+//
+//            String choiceInput = scanner.nextLine().trim();
+//            boolean isDigit = true;
+//
+//            for (int i = 0; i < choiceInput.length(); i++) {
+//                if (choiceInput.charAt(i) < '0' || choiceInput.charAt(i) > '9') {
+//                    isDigit = false;
+//                    break;
+//                }
+//            }
+//
+//            if (!isDigit || choiceInput.isEmpty()) {
+//                System.out.println("Invalid input. Please enter a number (1, 2, or 3).");
+//                continue;
+//            }
+//
+//            int choice = Integer.parseInt(choiceInput);
+//
+//            if (choice == 1) {
+//                System.out.print("Enter the new date (dd/MM/yyyy): ");
+//                String inputDate = scanner.nextLine().trim();
+//
+//                if (inputDate.length() == 10 && inputDate.charAt(2) == '/' && inputDate.charAt(5) == '/') {
+//                    String day = inputDate.substring(0, 2);
+//                    String month = inputDate.substring(3, 5);
+//                    String year = inputDate.substring(6, 10);
+//
+//                    boolean isValid = true;
+//
+//                    for (int i = 0; i < 2; i++) {
+//                        if (day.charAt(i) < '0' || day.charAt(i) > '9' ||
+//                                month.charAt(i) < '0' || month.charAt(i) > '9') {
+//                            isValid = false;
+//                            break;
+//                        }
+//                    }
+//                    for (int i = 0; i < 4; i++) {
+//                        if (year.charAt(i) < '0' || year.charAt(i) > '9') {
+//                            isValid = false;
+//                            break;
+//                        }
+//                    }
+//
+//                    if (isValid) {
+//                        LocalDate newDate = LocalDate.of(
+//                                Integer.parseInt(year),
+//                                Integer.parseInt(month),
+//                                Integer.parseInt(day)
+//                        );
+//
+//                        if (newDate.isBefore(currentDate)) {
+//                            System.out.println("Selected date cannot be earlier than today.");
+//                            continue;
+//                        }
+//
+//                        return newDate;
+//                    }
+//                }
+//
+//                System.out.println("Invalid date format. Please try again.");
+//            } else if (choice == 2) {
+//                System.out.print("Enter the new location: ");
+//                String newLocation = scanner.nextLine().trim();
+//                currentUser.setUserLocation(newLocation);
+//                System.out.println("Location updated to: " + newLocation);
+//                return null;
+//
+//            } else if (choice == 3) {
+//                System.out.println("Exiting ...");
+//                return null;
+//
+//            } else {
+//                System.out.println("Invalid choice. Please enter 1, 2, or 3.");
+//            }
+//        }
+//    }
+
     public static LocalDate changeLocDate(User currentUser) {
-        LocalDate currentDate = LocalDate.now();
         Scanner scanner = new Scanner(System.in);
         DateTimeFormatter formatter = BookMyShow.getDateFormatter();
+        LocalDate currentDate = LocalDate.now();
 
         while (true) {
-            System.out.println("\nDo you want to change the date or location?");
-            System.out.println("1. Change Date");
-            System.out.println("2. Change Location");
-            System.out.println("3. Exit");
-            System.out.print("Enter your choice: ");
+            System.out.print("Enter the new date (dd/MM/yyyy): ");
+            String inputDate = scanner.nextLine().trim();
 
-            String choiceInput = scanner.nextLine().trim();
-            boolean isDigit = true;
+            if (inputDate.length() == 10 && inputDate.charAt(2) == '/' && inputDate.charAt(5) == '/') {
+                String day = inputDate.substring(0, 2);
+                String month = inputDate.substring(3, 5);
+                String year = inputDate.substring(6, 10);
 
-            for (int i = 0; i < choiceInput.length(); i++) {
-                if (choiceInput.charAt(i) < '0' || choiceInput.charAt(i) > '9') {
-                    isDigit = false;
-                    break;
+                boolean isValid = true;
+
+                for (int i = 0; i < 2; i++) {
+                    if (day.charAt(i) < '0' || day.charAt(i) > '9' ||
+                            month.charAt(i) < '0' || month.charAt(i) > '9') {
+                        isValid = false;
+                        break;
+                    }
                 }
-            }
-
-            if (!isDigit || choiceInput.isEmpty()) {
-                System.out.println("Invalid input. Please enter a number (1, 2, or 3).");
-                continue;
-            }
-
-            int choice = Integer.parseInt(choiceInput);
-
-            if (choice == 1) {
-                System.out.print("Enter the new date (dd/MM/yyyy): ");
-                String inputDate = scanner.nextLine().trim();
-
-                if (inputDate.length() == 10 && inputDate.charAt(2) == '/' && inputDate.charAt(5) == '/') {
-                    String day = inputDate.substring(0, 2);
-                    String month = inputDate.substring(3, 5);
-                    String year = inputDate.substring(6, 10);
-
-                    boolean isValid = true;
-
-                    for (int i = 0; i < 2; i++) {
-                        if (day.charAt(i) < '0' || day.charAt(i) > '9' ||
-                                month.charAt(i) < '0' || month.charAt(i) > '9') {
-                            isValid = false;
-                            break;
-                        }
-                    }
-                    for (int i = 0; i < 4; i++) {
-                        if (year.charAt(i) < '0' || year.charAt(i) > '9') {
-                            isValid = false;
-                            break;
-                        }
-                    }
-
-                    if (isValid) {
-                        LocalDate newDate = LocalDate.of(
-                                Integer.parseInt(year),
-                                Integer.parseInt(month),
-                                Integer.parseInt(day)
-                        );
-
-                        if (newDate.isBefore(currentDate)) {
-                            System.out.println("Selected date cannot be earlier than today.");
-                            continue;
-                        }
-
-                        return newDate;
+                for (int i = 0; i < 4; i++) {
+                    if (year.charAt(i) < '0' || year.charAt(i) > '9') {
+                        isValid = false;
+                        break;
                     }
                 }
 
-                System.out.println("Invalid date format. Please try again.");
-            } else if (choice == 2) {
-                System.out.print("Enter the new location: ");
-                String newLocation = scanner.nextLine().trim();
-                currentUser.setUserLocation(newLocation);
-                System.out.println("Location updated to: " + newLocation);
-                return null;
+                if (isValid) {
+                    LocalDate newDate = LocalDate.of(
+                            Integer.parseInt(year),
+                            Integer.parseInt(month),
+                            Integer.parseInt(day)
+                    );
 
-            } else if (choice == 3) {
-                System.out.println("Exiting ...");
-                return null;
+                    if (newDate.isBefore(currentDate)) {
+                        System.out.println("Selected date cannot be earlier than today.");
+                        continue;
+                    }
 
-            } else {
-                System.out.println("Invalid choice. Please enter 1, 2, or 3.");
+                    return newDate;
+                }
             }
+
+            System.out.println("Invalid date format. Please try again.");
         }
     }
+
+    public static void changeLocation(User currentUser) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the new location: ");
+        String newLocation = scanner.nextLine().trim();
+        currentUser.setUserLocation(newLocation);
+        System.out.println("Location updated to: " + newLocation);
+    }
+
+//    public static void viewTickets(User currentUser) {
+//        System.out.println(":::::::::::::::::   VIEW BOOKED TICKETS :::::::::::::::::::");
+//        var viewtickets = currentUser.getTickets();
+//
+//        if (viewtickets.isEmpty()) {
+//            System.out.println("No tickets booked yet.");
+//            return;
+//        }
+//
+//        for (Tickets ticket : viewtickets) {
+//            System.out.println("\n============================================");
+//            System.out.println("Theatre Name   : " + ticket.getTheatreName());
+//            System.out.println("Location       : " + ticket.getLocation());
+//            System.out.println("Movie Name     : " + ticket.getMovieName());
+//            System.out.println("Screen Name    : " + ticket.getScreenName());
+//            System.out.println("Show Time      : " + ticket.getShowTime().format(BookMyShow.getTimeFormatter()));
+//            System.out.println("Amount Paid    : ₹" + ticket.getPrice());
+//            System.out.println("Seat Numbers   : " + String.join(", ", ticket.getSeatNumbers()));
+//            System.out.println("============================================\n");
+//        }
+//    }
+
 
 
     public static void viewTickets(User currentUser) {
